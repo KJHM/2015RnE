@@ -20,7 +20,6 @@ boolean isFlying = false;
 float speedX = 0.0;
 float speedY = 0.0;
 
-
 float speedXKp = 0.15;
 float speedXKi = 0.01;
 float speedXKd = 0.0; 
@@ -28,6 +27,9 @@ float speedXKd = 0.0;
 float speedYKp = 0.15;
 float speedYKi = 0.01;
 float speedYKd = 0.0;
+
+float oldpidX = 0.0;
+float oldpidY = 0.0;
 
 float maxControlValue;
 PIDController pidspeedX;
@@ -137,7 +139,8 @@ void draw() {
         pidspeedY.reSet();
         
         //target miss;
-        ardrone.stop();
+        //ardrone.stop();
+        ardrone.move3D(-(int)oldpidY, -(int)oldpidX, 0,0);
       }
       return;
       }
@@ -191,47 +194,6 @@ void draw() {
     }
   
     float distance = tracker.GetTargetDistance(targetId);//height for our projects;
-
-    
-  
-    //---PIDs
-    /*
-    if(trackingStart == true && isFlying == true) {
-      for(int j = 0; j < 50; j++) {
-        speedY += ((int)(pidspeedY.estimate((int)y, 0))*0.01);
-        speedX += ((int)(pidspeedX.estimate((int)x, 0))*0.01);
-        //speed x acquire and apply instant....
-        //true moving code is needed....
-        if (y > 0) {
-            ardrone.backward(speedY);
-            text("backward", width/128*50, height/20);
-            return;
-          }
-          else if (y < 0) {
-            ardrone.forward(speedY);
-            text("forward", width/128*50, height/20);
-            return;
-          }
-    
-          if (x > 0) {
-            ardrone.goRight(speedX);
-            text("goRight", width/128*50, height/20);
-            return;
-          } 
-          else if (x < 0 ) {
-            ardrone.goLeft(speedX);
-            text("goLeft", width/128*50, height/20);
-            return;
-          }
-          P = tracker.GetTargetPosition(targetId);
-          x = P.x;
-          y = P.y;
-          z = P.z;
-          log.println(x + "\t" + y + "\t" + z + "\t" + distance +"\t"+ speedX + "\t" + speedY );
-  
-      }
-  }
-  */
   
   //---PIDs
     if(trackingStart == true && isFlying == true) {
@@ -241,6 +203,9 @@ void draw() {
         float diognalDistance = sqrt(x*x + y*y);
         //println(speedY +"," + speedX +","+diognalDistance);
         log.println(x + "\t" + y + "\t" + z + "\t" + diognalDistance +"\t"+ (int)speedX + "\t" + (int)speedY + "\t" + maxControlValue);
+        
+        oldpidX = speedX;
+        oldpidY = speedY;
     
         if ((int)diognalDistance < 30) {//center fix recalcuate to fix
            log.println("center fixed="+diognalDistance);
@@ -313,7 +278,8 @@ void draw() {
           return;
         }
         
-        ardrone.stop(); 
+        //ardrone.stop(); 
+        ardrone.move3D((int)speedY, (int)speedX, 0,0);
         text("stop", width/128*50, height/20);        
     }
     */
