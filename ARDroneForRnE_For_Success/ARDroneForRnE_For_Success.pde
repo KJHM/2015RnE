@@ -1,4 +1,3 @@
-
 import com.shigeodayo.ardrone.manager.*;
 import com.shigeodayo.ardrone.navdata.*;
 import com.shigeodayo.ardrone.utils.*;
@@ -30,15 +29,12 @@ float speedYKp = 0.15;
 float speedYKi = 0.01;
 float speedYKd = 0.0;
 
-
-
 float maxControlValue;
 PIDController pidspeedX;
 PIDController pidspeedY;
 
 //Log
 PrintWriter log;
-
 
 Tracker tracker;
 int numTargets = 1;
@@ -49,7 +45,6 @@ String unit = "cm";
 
 int targetId = 0;
 
-
 float dt = .01;
 
 //Serial
@@ -59,9 +54,8 @@ float dt = .01;
 int val;
 void setup() {
   
- 
- pidspeedX = new PIDController(speedXKp, speedXKi, speedXKd, 2);
- pidspeedY = new PIDController(speedYKp, speedYKi, speedYKd, 2);
+pidspeedX = new PIDController(speedXKp, speedXKi, speedXKd, 2);
+pidspeedY = new PIDController(speedYKp, speedYKi, speedYKd, 2);
   
   
   size(640, 360, P3D);
